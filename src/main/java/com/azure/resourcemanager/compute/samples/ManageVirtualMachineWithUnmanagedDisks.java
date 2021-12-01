@@ -43,12 +43,13 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final Region region = Region.US_WEST_CENTRAL;
+        final Region region = Region.US_WEST;
         final String windowsVMName = Utils.randomResourceName(azureResourceManager, "wVM", 15);
         final String linuxVMName = Utils.randomResourceName(azureResourceManager, "lVM", 15);
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
+        final String sshPublicKey = Utils.sshPublicKey();
         final String dataDiskName = "disk2";
 
         try {
@@ -202,7 +203,7 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
                     .withoutPrimaryPublicIPAddress()
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey)
                     .withUnmanagedDisks()
                     .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
